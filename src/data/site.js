@@ -11,8 +11,7 @@ export const BRAND = {
     instagram: "https://www.instagram.com/surat_kshtriya_yuvak_mandal/",
     email: "skymandal1961@gmail.com",
     location: "Surat, Gujarat, India",
-    logoUrl:
-        "https://customer-assets.emergentagent.com/job_f2986205-c1cc-4b4d-9cdd-fb34dd63fafa/artifacts/acrub2zj_surat%20xtiya%20yuivak%20mandal%20logo.png",
+    logoUrl: "/logo.png",
 };
 
 export const MEMBERS = [
