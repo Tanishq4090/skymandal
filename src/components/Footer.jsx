@@ -102,7 +102,7 @@ export const Footer = () => {
                         rights reserved.
                     </p>
                     <p className="font-gujarati">
-                        સહકાર · સિદ્ધિ
+                        સહકાર · સંગઠન · સિદ્ધિ
                     </p>
                 </div>
             </div>

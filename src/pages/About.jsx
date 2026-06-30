@@ -123,11 +123,11 @@ const Values = () => (
             <div className="max-w-2xl">
                 <p className="overline">Core values</p>
                 <h2 className="mt-3 text-4xl sm:text-5xl text-ink-900">
-                    The four pillars
+                    The three pillars
                     <span className="block text-brand-700">we live by.</span>
                 </h2>
             </div>
-            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {VALUES.map((v, idx) => (
                     <div
                         key={v.title}
@@ -168,7 +168,7 @@ const Quotation = () => (
                     જ્યાં યુવાઓ સેવા કરે — ત્યાં સમાજ આગળ વધે.
                 </p>
                 <p className="mt-6 text-sm uppercase tracking-[0.2em] text-white/80">
-                    Surat Kshtriya Yuvak Mandal · સહકાર · સિદ્ધિ
+                    Surat Kshtriya Yuvak Mandal · સહકાર · સંગઠન · સિદ્ધિ
                 </p>
             </div>
         </div>

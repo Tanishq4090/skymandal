@@ -3,10 +3,10 @@
 export const BRAND = {
     name: "Surat Kshtriya Yuvak Mandal",
     nameGujarati: "સુરત ક્ષત્રિય યુવક મંડળ",
-    tagline: "Sahkar · Siddhi",
-    taglineGujarati: "સહકાર · સિદ્ધિ",
-    mantra: "Namami Maa Jyotirgamay",
-    mantraGujarati: "નમામિ માં જ્યોતિર્ગામય",
+    tagline: "Sahkar · Sangathan · Siddhi",
+    taglineGujarati: "સહકાર · સંગઠન · સિદ્ધિ",
+    mantra: "Tamaso Ma Jyotirgamay",
+    mantraGujarati: "તમસો મા જ્યોતિર્ગમય",
     establishedSince: "Serving the Khatri community of Surat",
     instagram: "https://www.instagram.com/surat_kshtriya_yuvak_mandal/",
     email: "skymandal1961@gmail.com",
@@ -121,18 +121,13 @@ export const VALUES = [
         blurb: "Cooperation — standing together as one extended family of the Khatri community.",
     },
     {
+        title: "Sangathan",
+        titleGu: "સંગઠન",
+        blurb: "Unity — building a strong and unified organization to serve and uplift our samaj.",
+    },
+    {
         title: "Siddhi",
         titleGu: "સિદ્ધિ",
         blurb: "Achievement — every act of seva is a step toward collective progress.",
-    },
-    {
-        title: "Sanskar",
-        titleGu: "સંસ્કાર",
-        blurb: "Heritage — passing our values, language and traditions to the next generation.",
-    },
-    {
-        title: "Seva",
-        titleGu: "સેવા",
-        blurb: "Service — to elders, to youth, to the city of Surat that we proudly call home.",
     },
 ];

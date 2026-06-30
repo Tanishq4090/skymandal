@@ -25,7 +25,7 @@ const Hero = () => (
             <div className="lg:col-span-7 animate-fade-up">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-line text-xs tracking-wider text-brand-700">
                     <Sparkles className="h-3.5 w-3.5" />
-                    <span>SAHKAR · SIDDHI · સહકાર · સિદ્ધિ</span>
+                    <span>SAHKAR · SANGATHAN · SIDDHI · સહકાર · સંગઠન · સિદ્ધિ</span>
                 </div>
 
                 <h1 className="mt-6 font-serif text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink-900">
@@ -78,7 +78,7 @@ const Hero = () => (
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/10" />
                     <div className="absolute bottom-6 left-6 right-6 text-white">
-                        <p className="font-gujarati text-lg">નમામિ માં જ્યોતિર્ગામય</p>
+                        <p className="font-gujarati text-lg">{BRAND.mantraGujarati}</p>
                         <p className="mt-1 font-serif text-2xl">{BRAND.mantra}</p>
                     </div>
                 </div>
@@ -152,18 +152,18 @@ const Campaigns = () => (
 );
 
 const ValuesBlock = () => {
-    const icons = [Heart, GraduationCap, Users, Stethoscope];
+    const icons = [Heart, Users, GraduationCap];
     return (
         <section data-testid="values-section" className="section-pad bg-ivory-100 border-y border-line">
             <div className="container-page">
                 <div className="max-w-3xl">
                     <p className="overline">What we stand for</p>
                     <h2 className="mt-3 text-4xl sm:text-5xl text-ink-900">
-                        Four words.
+                        Three words.
                         <span className="block text-brand-700">A lifetime of seva.</span>
                     </h2>
                 </div>
-                <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
                     {VALUES.map((v, i) => {
                         const Icon = icons[i % icons.length];
                         return (

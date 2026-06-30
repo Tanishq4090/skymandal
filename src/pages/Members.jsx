@@ -155,7 +155,7 @@ const MComittee = () => {
 
                 <p className="mt-8 text-center text-sm text-ink-500">
                     Every name above represents a promise to the samaj.{" "}
-                    <span className="font-gujarati text-brand-700">સહકાર · સિદ્ધિ</span>
+                    <span className="font-gujarati text-brand-700">સહકાર · સંગઠન · સિદ્ધિ</span>
                 </p>
             </div>
         </section>
