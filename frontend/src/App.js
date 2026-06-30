@@ -1,56 +1,62 @@
 import { useEffect } from "react";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useLocation,
+} from "react-router-dom";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Members from "@/pages/Members";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+const ScrollToTop = () => {
+    const { pathname, hash } = useLocation();
+    useEffect(() => {
+        if (hash) {
+            // delay to let DOM render
+            setTimeout(() => {
+                const el = document.querySelector(hash);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 80);
+        } else {
+            window.scrollTo({ top: 0, behavior: "instant" });
+        }
+    }, [pathname, hash]);
+    return null;
 };
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <ScrollToTop />
+                <Navbar />
+                <main>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/members" element={<Members />} />
+                        <Route path="*" element={<Home />} />
+                    </Routes>
+                </main>
+                <Footer />
+                <Toaster
+                    position="top-right"
+                    richColors
+                    closeButton
+                    toastOptions={{
+                        classNames: {
+                            toast: "font-sans",
+                        },
+                    }}
+                />
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
