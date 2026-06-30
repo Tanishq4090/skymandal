@@ -1,0 +1,133 @@
+{
+  "project_overview": {
+    "name": "Surat Kshtriya Yuvak Mandal",
+    "domain": "NGO / Community Organization",
+    "app_type": "marketing_site",
+    "theme_and_archetype": {
+      "theme": "LIGHT",
+      "archetype": "1 (Organic & Earthy) / Traditional Indian Aesthetic",
+      "mood": "Rooted in heritage, traditional, warm, community-focused, welcoming, contemporary"
+    }
+  },
+  "typography": {
+    "instructions": "Import Google Fonts via @import in index.css. Use 'Cormorant Garamond' for English headings to provide an editorial heritage feel, and 'Outfit' for body text. Use native web fonts for Gujarati text if a specific font isn't loaded.",
+    "fonts": [
+      {
+        "family": "Cormorant Garamond",
+        "usage": "H1, H2, H3 (English Headings)",
+        "weights": ["400", "600", "700"]
+      },
+      {
+        "family": "Outfit",
+        "usage": "Body Text, Overlines, Buttons, Nav Links",
+        "weights": ["300", "400", "500", "600"]
+      }
+    ],
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight font-serif text-primary",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-serif text-primary",
+      "h3": "text-xl sm:text-2xl font-serif text-primary",
+      "body": "text-base leading-relaxed text-gray-800 font-sans",
+      "overline": "uppercase tracking-[0.2em] text-sm text-accent font-sans font-medium"
+    },
+    "bilingual_rules": "For bilingual headers, display the Gujarati text as a slightly smaller sub-heading or overline in a complementary color (e.g., accent or muted primary) alongside the English heading."
+  },
+  "colors": {
+    "background": {
+      "base": "#FAF9F6",
+      "surface": "#FFFFFF",
+      "alt": "#F5F2EB",
+      "glass": "bg-white/70 backdrop-blur-xl border-b border-black/5"
+    },
+    "primary": {
+      "DEFAULT": "#A81A11",
+      "hover": "#8B150E",
+      "light": "#FCE9E8"
+    },
+    "accent": {
+      "DEFAULT": "#D68A1A",
+      "hover": "#C07A16"
+    },
+    "text": {
+      "primary": "#1A1A1A",
+      "secondary": "#4A4A4A",
+      "inverse": "#FFFFFF"
+    },
+    "border": "#E5E0D8"
+  },
+  "layout_and_spacing": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "section_spacing": "py-24",
+    "generous_spacing": "Use p-8 or p-12 for cards instead of default p-4 to ensure breathing room.",
+    "grids": "Follow 'MODE A: THE TETRIS GRID' for the campaigns section. Mix wide (col-span-8) and square (col-span-4) elements. Asymmetry is key."
+  },
+  "components": {
+    "navigation": "Sticky glassmorphism header (bg-white/70 backdrop-blur-xl). Must contain the logo, English/Gujarati bilingual elements if fitting, 3 navigation links (Home, About Us, Members), and a prominent CTA for 'Contact Us' or 'Donate'.",
+    "hero": "Asymmetric split or layered layout. Do not use generic full-width centered text unless highly stylized. Use a mix of cream background and deep red accents. Max overlay opacity for images bg-black/40 if text overlaps.",
+    "cards": "For the Campaigns grid: Flat backgrounds (bg-white or bg-[#F5F2EB]), subtle 1px border (border-[#E5E0D8]), soft shadows only on hover (-translate-y-1 shadow-lg transition-all duration-300).",
+    "forms": "Use Shadcn UI Input, Textarea, Button. Form should trigger an email via Resend in the backend route.",
+    "tables": "Use Shadcn UI Table for the Members List. Keep it clean with #FAF9F6 backgrounds for headers and white for rows.",
+    "buttons": "Primary: bg-[#A81A11] text-white hover:bg-[#8B150E] rounded-md px-6 py-3 font-medium transition-colors. Accent: bg-[#D68A1A] text-white hover:bg-[#C07A16]."
+  },
+  "pages": {
+    "home": {
+      "hero": "Hero section with NGO name, dual-language tagline (Gujarati + English), mission statement. Use a strong traditional Indian aesthetic image.",
+      "campaigns": "Bento grid of 'Our Campaigns': blood donation, education support, religious/cultural events, mass weddings, medical camps. Use icons or photos for each.",
+      "cta": "Section encouraging community involvement leading to the contact form."
+    },
+    "about_us": {
+      "content": "History of Surat Kshtriya Yuvak Mandal, mission/vision for Khatri community, values, founding context. Use a timeline or clean typographic layout with deep red text accents."
+    },
+    "members": {
+      "content": "Structured table or card grid listing committee members: President, V.President, Secretary, J.Secretary, Treasurer, IPP, and 11 M.Committee members."
+    }
+  },
+  "media": {
+    "logos": [
+      {
+        "url": "https://customer-assets.emergentagent.com/job_f2986205-c1cc-4b4d-9cdd-fb34dd63fafa/artifacts/acrub2zj_surat%20xtiya%20yuivak%20mandal%20logo.png",
+        "category": "brand_logo",
+        "description": "NGO Logo to be used in header and footer."
+      }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1774438024558-9dec44f55382?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxpbmRpYW4lMjBjb21tdW5pdHklMjBmZXN0aXZhbHxlbnwwfHx8fDE3ODI4MDczNDV8MA&ixlib=rb-4.1.0&q=85",
+        "category": "hero_background",
+        "description": "Women gathered under a decorative canopy. Use in hero section to represent community."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1774798909993-eecdf8de4472?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBjb21tdW5pdHklMjBmZXN0aXZhbHxlbnwwfHx8fDE3ODI4MDczNDV8MA&ixlib=rb-4.1.0&q=85",
+        "category": "campaign_festival",
+        "description": "Festival celebration, colors. Use for religious/cultural events."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615461066159-fea0960485d5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwxfHxibG9vZCUyMGRvbmF0aW9ufGVufDB8fHx8MTc4MjgwNzM0NHww&ixlib=rb-4.1.0&q=85",
+        "category": "campaign_blood_donation",
+        "description": "Blood donation camp. Use for blood donation campaign."
+      },
+      {
+        "url": "https://images.unsplash.com/flagged/photo-1574097656146-0b43b7660cb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHw0fHxpbmRpYW4lMjBzdHVkZW50cyUyMGVkdWNhdGlvbnxlbnwwfHx8fDE3ODI4MDczNDR8MA&ixlib=rb-4.1.0&q=85",
+        "category": "campaign_education",
+        "description": "Student education. Use for education support/scholarship campaign."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBzdHVkZW50cyUyMGVkdWNhdGlvbnxlbnwwfHx8fDE3ODI4MDczNDR8MA&ixlib=rb-4.1.0&q=85",
+        "category": "about_us_image",
+        "description": "Education/community representation for About Us page."
+      }
+    ]
+  },
+  "testing": {
+    "data_testid_requirement": "CRITICAL: All interactive elements, navigation links, form inputs, submit buttons, and major sections must have a kebab-case 'data-testid' attribute representing their role. Example: data-testid='contact-submit-button'"
+  },
+  "instructions_to_main_agent": [
+    "Install 'lucide-react' for icons if not already present.",
+    "Build out the frontend strictly using Tailwind and Shadcn UI (for forms/tables) focusing on the warm red/ivory traditional aesthetic.",
+    "Configure Tailwind with the provided custom colors ('primary: #A81A11', 'accent: #D68A1A', etc) and font-families.",
+    "Create the specific routing for the 3 main pages: Home, About Us, Members.",
+    "Implement the Contact form utilizing the Shadcn components and connect the submission to a backend route for Resend emails.",
+    "Ensure the hero header seamlessly blends Gujarati and English text, treating the Gujarati as an elegant overline/subheading.",
+    "DO NOT use generic purple or teal gradients."
+  ]
+}
