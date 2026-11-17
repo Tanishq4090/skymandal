@@ -9,7 +9,7 @@ export const BRAND = {
     mantraGujarati: "તમસો મા જ્યોતિર્ગમય",
     establishedSince: "Serving the Khatri community of Surat",
     instagram: "https://www.instagram.com/surat_kshtriya_yuvak_mandal/",
-    email: "skymandal1961@gmail.com",
+    email: "suratkym@gmail.com",
     location: "Surat, Gujarat, India",
     pickupLocation: "Surat Kshtriya Samaj Community Vadi, Surat, Gujarat",
     pickupLocationGu: "સુરત ક્ષત્રિય સમાજ વાડી, સુરત",
