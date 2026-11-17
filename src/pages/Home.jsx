@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Heart, GraduationCap, Stethoscope, Users, Calendar } from "lucide-react";
+import { ArrowRight, Flame, Heart, GraduationCap, Stethoscope, Users, Calendar } from "lucide-react";
 import { BRAND, CAMPAIGNS, VALUES } from "@/data/site";
 import { ContactSection } from "@/components/ContactSection";
 
 const StatItem = ({ value, label, labelGu }) => (
     <div className="flex flex-col">
-        <span className="font-serif text-4xl md:text-5xl text-brand-700">{value}</span>
-        <span className="mt-1 text-xs uppercase tracking-[0.2em] text-ink-500">
+        <span className="font-serif text-4xl md:text-5xl text-brand-700 font-bold">{value}</span>
+        <span className="mt-1 text-xs uppercase tracking-[0.2em] text-ink-500 font-semibold">
             {label}
         </span>
         <span className="font-gujarati text-sm text-ink-700 mt-0.5">{labelGu}</span>
@@ -23,12 +23,12 @@ const Hero = () => (
 
         <div className="container-page pt-16 md:pt-24 pb-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7 animate-fade-up">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-line text-xs tracking-wider text-brand-700">
-                    <Sparkles className="h-3.5 w-3.5" />
+                <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-white border border-brand-200/90 text-xs font-semibold tracking-wider text-brand-800 shadow-sm">
+                    <span className="w-2 h-2 rounded-sm bg-brand-700 rotate-45 shrink-0" />
                     <span>SAHKAR · SANGATHAN · SIDDHI · સહકાર · સંગઠન · સિદ્ધિ</span>
                 </div>
 
-                <h1 className="mt-6 font-serif text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink-900">
+                <h1 className="mt-6 font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.02] text-ink-900 font-bold">
                     Serving the
                     <span className="block text-brand-700">Khatri community</span>
                     <span className="block text-ink-900">of Surat.</span>
@@ -201,8 +201,8 @@ const EventsCallout = () => (
                 <div className="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
                 <div className="relative grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                     <div className="md:col-span-8">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs uppercase tracking-widest">
-                            <Calendar className="h-3.5 w-3.5" />
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/15 text-xs font-semibold uppercase tracking-wider">
+                            <Calendar className="h-3.5 w-3.5 text-saffron" />
                             <span>Upcoming initiative</span>
                         </div>
                         <h2 className="mt-5 text-4xl sm:text-5xl font-serif leading-tight">
@@ -233,12 +233,50 @@ const EventsCallout = () => (
     </section>
 );
 
+const SalampakTeaser = () => (
+    <section data-testid="salampak-teaser" className="section-pad bg-ivory-100 border-y border-line">
+        <div className="container-page">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div className="lg:col-span-8 space-y-4">
+                    <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-brand-50 border border-brand-200/90 text-xs font-semibold tracking-wider text-brand-800">
+                        <Flame className="h-3.5 w-3.5 text-brand-700" />
+                        <span>NOW AVAILABLE ONLINE · તાજો દેશી ઘી નો સાલમ પાક</span>
+                    </div>
+                    <h2 className="font-serif text-4xl sm:text-5xl text-ink-900 leading-tight">
+                        Order Authentic Winter Salampak by SKYM.
+                    </h2>
+                    <p className="font-gujarati text-2xl text-saffron font-medium">
+                        શુદ્ધ દેશી ઘી, સલામ પંજા અને ૩૨ ઔષધિઓથી ભરપૂર પૌષ્ટિક વસાણું
+                    </p>
+                    <p className="text-ink-500 text-base max-w-2xl leading-relaxed">
+                        Handcrafted annually by our Surat Kshtriya Yuvak Mandal community artisans. Packed with restorative Ayurvedic herbs, rich dry fruits, and pure cow ghee to keep your entire family healthy through the winter season.
+                    </p>
+                </div>
+                <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end justify-center">
+                    <Link
+                        to="/salampak"
+                        data-testid="home-salampak-cta"
+                        className="btn-primary !py-4 !px-8 text-center flex items-center justify-center gap-2"
+                    >
+                        <span>Order Salampak Classic</span>
+                        <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <span className="text-xs text-ink-400 text-center lg:text-right">
+                        500g (₹420) · 1 kg (₹840) · Self-Pickup from Community Vadi (Ready in 4–5 Days)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+);
+
 export default function Home() {
     return (
         <div data-testid="home-page">
             <Hero />
             <Campaigns />
             <ValuesBlock />
+            <SalampakTeaser />
             <EventsCallout />
             <ContactSection />
         </div>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+Gujarati:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Anek+Gujarati:wght@500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -38,17 +38,16 @@
     }
     body {
         @apply bg-ivory-50 text-ink-900;
-        font-family: "Outfit", system-ui, sans-serif;
-        font-feature-settings: "ss01", "cv11";
+        font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
     h1, h2, h3, h4 {
-        font-family: "Cormorant Garamond", Georgia, serif;
-        letter-spacing: -0.01em;
+        font-family: "Playfair Display", Georgia, serif;
+        letter-spacing: -0.015em;
     }
     .font-gujarati {
-        font-family: "Noto Serif Gujarati", "Mukta", serif;
+        font-family: "Anek Gujarati", "Noto Sans Gujarati", sans-serif;
         font-feature-settings: normal;
     }
     ::selection {
@@ -65,16 +64,20 @@
         @apply py-20 md:py-28;
     }
     .overline {
-        @apply uppercase tracking-[0.22em] text-xs font-medium text-brand-600;
+        @apply uppercase tracking-[0.2em] text-xs font-bold text-brand-700 flex items-center gap-2;
+    }
+    .overline::before {
+        content: "";
+        @apply inline-block w-2.5 h-[2px] bg-brand-600 rounded-full shrink-0;
     }
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-brand-700 hover:-translate-y-[1px] active:translate-y-0;
+        @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-brand-700 hover:-translate-y-[1px] active:translate-y-0 shadow-sm hover:shadow;
     }
     .btn-ghost {
-        @apply inline-flex items-center justify-center gap-2 rounded-md border border-brand-600/30 px-6 py-3 text-sm font-medium text-brand-700 transition-all duration-300 hover:bg-brand-50;
+        @apply inline-flex items-center justify-center gap-2 rounded-lg border border-brand-600/30 px-6 py-3 text-sm font-semibold text-brand-700 transition-all duration-300 hover:bg-brand-50;
     }
     .card-soft {
-        @apply rounded-xl border border-line bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-22px_rgba(168,26,17,0.35)];
+        @apply rounded-2xl border border-line bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-22px_rgba(168,26,17,0.35)];
     }
     .grain {
         position: relative;

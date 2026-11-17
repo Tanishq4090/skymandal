@@ -86,3 +86,5 @@ android-sdk/
 credentials.json
 *.key
 .credentials
+website_backup/
+serve_spa.py

@@ -11,6 +11,9 @@ export const BRAND = {
     instagram: "https://www.instagram.com/surat_kshtriya_yuvak_mandal/",
     email: "skymandal1961@gmail.com",
     location: "Surat, Gujarat, India",
+    pickupLocation: "Surat Kshtriya Samaj Community Vadi, Surat, Gujarat",
+    pickupLocationGu: "સુરત ક્ષત્રિય સમાજ વાડી, સુરત",
+    prepDays: "4-5 દિવસ (4–5 working days)",
     logoUrl: "/logo.png",
 };
 
@@ -131,3 +134,39 @@ export const VALUES = [
         blurb: "Achievement — every act of seva is a step toward collective progress.",
     },
 ];
+
+export const SALAMPAK_PRODUCTS = [
+    {
+        id: "classic",
+        name: "Salampak Classic",
+        nameGu: "સાલમ પાક (ક્લાસિક)",
+        badge: "Pure Desi Ghee",
+        badgeColor: "bg-brand-700 text-white",
+        desc: "The authentic, centuries-old winter vasanu recipe made from pure Salam Panja, rich mawa, desi cow ghee, roasted almonds, cashews, and 30+ restorative Ayurvedic spices.",
+        icon: "🍯",
+        variants: [
+            { weight: "500g", price: 420 },
+            { weight: "1 kg", price: 840 }
+        ]
+    }
+];
+
+export const SALAMPAK_INGREDIENTS = [
+    {
+        category: "Base & Dairy",
+        items: ["Pure Mawa / Khoya (500g)", "Desi Gir Cow Ghee (450g)", "Full Cream Milk", "Mishri / Desi Sugar"]
+    },
+    {
+        category: "Premium Dry Fruits",
+        items: ["Mamra Almonds (Badam)", "Goan Cashews (Kaju)", "Pistachios (Pista)", "Melon Seeds (Magajtari)", "Dry Dates (Kharek)", "Charoli & Black Dates"]
+    },
+    {
+        category: "Star Ayurvedic Herbs",
+        items: ["Salam Panja (Salab)", "White & Black Musli", "Pipramul (Ganthoda)", "Sonth (Dry Ginger)", "Kamal Kakdi Powder", "Gokharu & Ashwagandha"]
+    },
+    {
+        category: "Warm Aromatic Spices",
+        items: ["Batrisyu Masala (32 herbs)", "Jaiphal & Javitri (Nutmeg/Mace)", "Green Cardamom (Elaichi)", "Poppy Seeds (Khaskhas)", "Singoda Flour (Water Chestnut)"]
+    }
+];
+

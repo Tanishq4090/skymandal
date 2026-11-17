@@ -43,9 +43,9 @@ module.exports = {
                 ring: 'hsl(var(--ring))',
             },
             fontFamily: {
-                serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                sans: ['Outfit', 'system-ui', 'sans-serif'],
-                gujarati: ['"Noto Serif Gujarati"', '"Mukta"', 'serif'],
+                serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+                gujarati: ['"Anek Gujarati"', '"Noto Sans Gujarati"', 'sans-serif'],
             },
             borderRadius: {
                 lg: 'var(--radius)',

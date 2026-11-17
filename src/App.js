@@ -12,6 +12,7 @@ import { Footer } from "@/components/Footer";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Members from "@/pages/Members";
+import Salampak from "@/pages/Salampak";
 
 const ScrollToTop = () => {
     const { pathname, hash } = useLocation();
@@ -40,6 +41,8 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/members" element={<Members />} />
+                        <Route path="/salampak" element={<Salampak />} />
+                        <Route path="/shop" element={<Salampak />} />
                         <Route path="*" element={<Home />} />
                     </Routes>
                 </main>

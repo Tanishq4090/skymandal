@@ -7,6 +7,7 @@ const NAV = [
     { to: "/", label: "Home", labelGu: "મુખ્ય" },
     { to: "/about", label: "About Us", labelGu: "અમારા વિશે" },
     { to: "/members", label: "Members", labelGu: "સભ્યો" },
+    { to: "/salampak", label: "Shop Salampak", labelGu: "સાલમ પાક" },
 ];
 
 export const Navbar = () => {
