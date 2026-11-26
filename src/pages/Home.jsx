@@ -89,7 +89,7 @@ export default function Home() {
 
         setIsProcessing(true);
 
-        const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || "rzp_test_U4j3Z0fjk5YJ2s";
+        const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || "rzp_test_U4kaJ6frz6imma";
 
         if (!window.Razorpay) {
             setIsProcessing(false);
