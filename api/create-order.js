@@ -41,7 +41,8 @@ module.exports = async function handler(req, res) {
     const options = {
       amount: Math.round(Number(amount)),
       currency,
-      receipt: receipt || `receipt_${Date.now()}`
+      receipt: receipt || `receipt_${Date.now()}`,
+      notes: body.notes || {}
     };
 
     const order = await razorpay.orders.create(options);

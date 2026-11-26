@@ -102,6 +102,19 @@ export default function Home() {
         }
 
         try {
+            const orderNotes = {
+                customer_name: orderForm.name,
+                customer_phone: orderForm.phone,
+                item: "Salampak Classic",
+                weight: is1kg ? "1 kg" : "500g",
+                quantity: `${quantity} Box`,
+                payment_plan: is1kg ? (paymentPlan1kg === "advance" ? "Advance Booking" : "Full Payment") : "Full Payment",
+                paid_online: `Rs. ${totalOnlinePayable}`,
+                due_at_vadi: totalDueAtVadi > 0 ? `Rs. ${totalDueAtVadi}` : "Rs. 0",
+                pickup_location: "Community Vadi, Surat",
+                customer_notes: orderForm.notes || "None"
+            };
+
             // STEP 1: Call Backend to Create Order
             const createRes = await fetch("/api/create-order", {
                 method: "POST",
@@ -109,7 +122,8 @@ export default function Home() {
                 body: JSON.stringify({
                     amount: totalOnlinePayable * 100, // paise
                     currency: "INR",
-                    receipt: `skym_rcpt_${Date.now()}`
+                    receipt: `skym_rcpt_${Date.now()}`,
+                    notes: orderNotes
                 })
             });
 
@@ -137,6 +151,7 @@ export default function Home() {
                     contact: orderForm.phone,
                     email: ""
                 },
+                notes: orderNotes,
                 theme: {
                     color: "#8B150E"
                 },
