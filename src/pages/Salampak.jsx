@@ -49,7 +49,7 @@ export default function Salampak() {
         });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         if (!orderForm.name.trim() || !orderForm.phone.trim()) {
@@ -57,62 +57,121 @@ export default function Salampak() {
             return;
         }
 
-        setIsProcessing(true);
-
-        const orderId = `SKYM-VADI-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        // Razorpay Options
-        const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || "rzp_test_placeholder";
-
-        const options = {
-            key: razorpayKey,
-            amount: totalAmount * 100, // in paise
-            currency: "INR",
-            name: BRAND.name,
-            description: `Salampak Classic (${activeVariant.weight}) × ${quantity}`,
-            image: BRAND.logoUrl,
-            prefill: {
-                name: orderForm.name,
-                contact: orderForm.phone,
-                email: orderForm.email || ""
-            },
-            theme: {
-                color: "#8B150E"
-            },
-            handler: function (response) {
-                completeOrder(response.razorpay_payment_id || `PAY_${Date.now()}`, orderId);
-            },
-            modal: {
-                ondismiss: function () {
-                    setIsProcessing(false);
-                    toast.info("Payment window closed.");
-                }
-            }
-        };
-
-        // If Razorpay script loaded on window and has a valid live key
-        if (window.Razorpay && razorpayKey !== "rzp_test_placeholder") {
-            try {
-                const rzp = new window.Razorpay(options);
-                rzp.open();
-                setIsProcessing(false);
-                return;
-            } catch (err) {
-                console.warn("Razorpay standard open fallback:", err);
-            }
+        if (totalAmount < 1) {
+            toast.error("Invalid order amount.");
+            return;
         }
 
-        // Demo / Standalone direct payment simulation for instant testing
-        setTimeout(() => {
-            const demoPaymentId = `pay_demo_${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-            completeOrder(demoPaymentId, orderId);
-        }, 1000);
+        setIsProcessing(true);
+
+        const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || "rzp_test_U4j3Z0fjk5YJ2s";
+
+        // Verify Razorpay SDK is loaded
+        if (!window.Razorpay) {
+            setIsProcessing(false);
+            toast.error("Razorpay SDK is not loaded. Please refresh or check your internet connection.");
+            return;
+        }
+
+        try {
+            // STEP 1: BACKEND - Call /api/create-order
+            const createOrderRes = await fetch("/api/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    amount: totalAmount * 100, // paise
+                    currency: "INR",
+                    receipt: `skym_rcpt_${Date.now()}`
+                })
+            });
+
+            const orderData = await createOrderRes.json();
+
+            if (!createOrderRes.ok || !orderData.order_id) {
+                throw new Error(orderData.error || "Failed to create order on server");
+            }
+
+            // STEP 2: FRONTEND - Open Razorpay Modal with order_id
+            const options = {
+                key: razorpayKey,
+                amount: orderData.amount, // in paise
+                currency: orderData.currency || "INR",
+                name: BRAND.name,
+                description: `Salampak Classic (${activeVariant.weight}) × ${quantity}`,
+                image: BRAND.logoUrl,
+                order_id: orderData.order_id,
+                prefill: {
+                    name: orderForm.name,
+                    contact: orderForm.phone,
+                    email: orderForm.email || ""
+                },
+                theme: {
+                    color: "#8B150E"
+                },
+                handler: async function (response) {
+                    // STEP 3: BACKEND - Verify Payment Signature
+                    try {
+                        setIsProcessing(true);
+                        const verifyRes = await fetch("/api/verify-payment", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+
+                        const verifyData = await verifyRes.json();
+
+                        if (!verifyRes.ok || !verifyData.success) {
+                            throw new Error(verifyData.message || "Payment verification failed");
+                        }
+
+                        // Success! Complete order and show confirmation receipt
+                        completeOrder(response.razorpay_payment_id, response.razorpay_order_id);
+                    } catch (verifyError) {
+                        setIsProcessing(false);
+                        console.error("Verification error:", verifyError);
+                        toast.error(`Payment Verification Failed: ${verifyError.message}`);
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        setIsProcessing(false);
+                        toast.info("Payment cancelled. You can retry whenever you are ready.");
+                    }
+                }
+            };
+
+            const rzp = new window.Razorpay(options);
+
+            // Handle payment failed event
+            rzp.on("payment.failed", function (failResponse) {
+                setIsProcessing(false);
+                const desc = failResponse?.error?.description || "Payment failed or transaction was declined.";
+                console.error("Razorpay payment.failed:", failResponse);
+                toast.error(`Payment Failed: ${desc}`);
+            });
+
+            rzp.open();
+        } catch (err) {
+            setIsProcessing(false);
+            console.error("Error initiating checkout:", err);
+            toast.error(`Checkout Error: ${err.message}`);
+        }
     };
 
     const completeOrder = (paymentId, orderId) => {
         setIsProcessing(false);
+        const tokenDisplay = `SKYM-VADI-${Math.floor(1000 + Math.random() * 9000)}`;
         const orderData = {
-            orderId,
+            orderId: tokenDisplay,
+            razorpayOrderId: orderId,
             paymentId,
             name: orderForm.name,
             phone: orderForm.phone,
@@ -135,8 +194,8 @@ export default function Salampak() {
         };
 
         setConfirmedOrder(orderData);
-        toast.success("ઓર્ડર પેમેન્ટ સફળ! Payment Received & Order Registered.", {
-            description: `Order Token: ${orderId}. Pick up from Community Vadi in 4-5 days.`
+        toast.success("ઓર્ડર પેમેન્ટ સફળ! Payment Received & Verified.", {
+            description: `Order Token: ${tokenDisplay}. Pick up from Community Vadi in 4-5 days.`
         });
 
         // Scroll to confirmation receipt
@@ -606,6 +665,12 @@ export default function Salampak() {
                                         <span>Payment ID:</span>
                                         <span className="font-mono text-ink-700">{confirmedOrder.paymentId}</span>
                                     </div>
+                                    {confirmedOrder.razorpayOrderId && (
+                                        <div className="flex justify-between items-center text-xs text-ink-500 px-1">
+                                            <span>Razorpay Order ID:</span>
+                                            <span className="font-mono text-ink-700">{confirmedOrder.razorpayOrderId}</span>
+                                        </div>
+                                    )}
                                     <div className="flex justify-between items-center text-xs text-ink-500 px-1">
                                         <span>Customer Name:</span>
                                         <span className="font-medium text-ink-900">{confirmedOrder.name}</span>
