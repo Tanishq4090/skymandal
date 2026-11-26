@@ -10,9 +10,7 @@ import {
     Printer,
     RefreshCw,
     ArrowRight,
-    HelpCircle,
-    Info,
-    Receipt
+    Info
 } from "lucide-react";
 import { toast } from "sonner";
 import { BRAND } from "@/data/site";
@@ -25,8 +23,8 @@ export default function Home() {
     const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
-    // For 1kg: "full" (₹840) or "advance" (₹500 online + ₹340 at Vadi)
-    const [paymentPlan1kg, setPaymentPlan1kg] = useState("full");
+    // For 1kg: "advance" (₹500 online + ₹340 at Vadi) or "full" (₹840 online)
+    const [paymentPlan1kg, setPaymentPlan1kg] = useState("advance");
 
     const [orderForm, setOrderForm] = useState({
         name: "",
@@ -39,7 +37,6 @@ export default function Home() {
 
     // Pricing calculation
     const is1kg = selectedVariantIdx === 1;
-    const unitPriceTotal = is1kg ? 840 : 420;
 
     // What needs to be paid online right now
     const unitOnlinePayable = is1kg
@@ -51,6 +48,11 @@ export default function Home() {
     // What remains to be paid at Vadi on collection
     const unitDueAtVadi = is1kg && paymentPlan1kg === "advance" ? 340 : 0;
     const totalDueAtVadi = unitDueAtVadi * quantity;
+
+    // Dynamic Step numbers based on language
+    const step1 = lang === "gu" ? "૧." : "1.";
+    const step2 = lang === "gu" ? "૨." : "2.";
+    const step3 = lang === "gu" ? "૩." : "3.";
 
     // Estimated ready date: 4 to 5 days from today
     const getEstimatedDate = () => {
@@ -270,7 +272,7 @@ export default function Home() {
         setOrderForm({ name: "", phone: "", notes: "" });
         setQuantity(1);
         setSelectedVariantIdx(0);
-        setPaymentPlan1kg("full");
+        setPaymentPlan1kg("advance");
     };
 
     const handlePrint = () => {
@@ -278,65 +280,78 @@ export default function Home() {
     };
 
     return (
-        <div data-testid="home-page" className="animate-fade-up pb-16">
-            {/* HERO POSTER BANNER */}
-            <section className="bg-ivory-100 border-b border-line pt-6 sm:pt-8 pb-8">
-                <div className="container-page">
-                    <div className="relative rounded-3xl overflow-hidden border-2 border-brand-800/20 shadow-xl aspect-[21/9] sm:aspect-[2.4/1] max-h-[460px]">
+        <div data-testid="home-page" className="animate-fade-up pb-12 sm:pb-16">
+            {/* HERO POSTER BANNER - OPTIMIZED FOR PHONES */}
+            <section className="bg-ivory-100 border-b border-line pt-3 sm:pt-6 pb-4 sm:pb-6">
+                <div className="container-page px-3 sm:px-6">
+                    {/* Responsive Banner Card: 16/10 on mobile so the food is fully visible */}
+                    <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-brand-800/15 shadow-md aspect-[16/10] sm:aspect-[2.35/1] min-h-[210px] max-h-[440px]">
                         <img
                             src="/images/salampak-hero.jpg"
                             alt="Surat Kshtriya Yuvak Mandal Salampak"
                             className="w-full h-full object-cover object-center"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white">
-                            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-black/60 backdrop-blur-md text-xs sm:text-sm font-bold uppercase text-saffron w-fit mb-2 border border-saffron/40">
-                                <span className="w-2 h-2 rounded-full bg-saffron shrink-0" />
+                        {/* Smooth bottom gradient so photo stays clear */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-3.5 sm:p-8 text-white">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-[10px] sm:text-xs font-bold uppercase text-saffron w-fit mb-1 sm:mb-2 border border-saffron/40">
+                                <span className="w-1.5 h-1.5 rounded-full bg-saffron shrink-0" />
                                 <span>{t.heroBadge}</span>
                             </span>
-                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-white">
+                            <h1 className="text-xl sm:text-4xl lg:text-5xl font-extrabold leading-snug sm:leading-tight text-white drop-shadow-sm">
                                 {t.heroSubtitle}
                             </h1>
-                            <p className="text-base sm:text-xl text-saffron mt-2 font-bold max-w-2xl">
+                            <p className="text-xs sm:text-lg text-saffron mt-0.5 sm:mt-1 font-bold">
                                 {t.heroTitle} ({t.brandEst})
                             </p>
                         </div>
                     </div>
 
-                    {/* VADI PICKUP THREE KEY NOTICES */}
-                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-brand-200 shadow-sm">
-                            <MapPin className="h-8 w-8 text-brand-700 shrink-0" />
-                            <div>
-                                <span className="text-xs uppercase font-bold text-ink-500 block">
-                                    {t.pickupPoint}
-                                </span>
-                                <span className="text-sm sm:text-base font-extrabold text-brand-800">
-                                    {lang === "gu" ? BRAND.pickupLocationGu : BRAND.pickupLocation}
-                                </span>
+                    {/* VADI PICKUP THREE KEY NOTICES - COMPACT & CLEAN ON MOBILE */}
+                    <div className="mt-3 sm:mt-5 bg-white rounded-2xl border border-line shadow-sm p-3.5 sm:p-5">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-4 md:divide-x divide-line">
+                            {/* Collection point */}
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center shrink-0">
+                                    <MapPin className="h-5 w-5" />
+                                </div>
+                                <div className="min-w-0">
+                                    <span className="text-[10px] uppercase font-bold text-ink-500 block leading-none mb-1">
+                                        {t.pickupPoint}
+                                    </span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-brand-800 block truncate sm:whitespace-normal">
+                                        {lang === "gu" ? BRAND.pickupLocationGu : BRAND.pickupLocation}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-line shadow-sm">
-                            <Clock className="h-8 w-8 text-brand-700 shrink-0" />
-                            <div>
-                                <span className="text-xs uppercase font-bold text-ink-500 block">
-                                    {t.pickupTimeline}
-                                </span>
-                                <span className="text-sm sm:text-base font-extrabold text-ink-900">
-                                    {t.pickupTimelineDesc}
-                                </span>
+                            {/* Preparation window */}
+                            <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4 border-t md:border-t-0 border-line/70">
+                                <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                                    <Clock className="h-5 w-5" />
+                                </div>
+                                <div className="min-w-0">
+                                    <span className="text-[10px] uppercase font-bold text-ink-500 block leading-none mb-1">
+                                        {t.pickupTimeline}
+                                    </span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-ink-900 block truncate sm:whitespace-normal">
+                                        {t.pickupTimelineDesc}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-line shadow-sm">
-                            <MessageSquare className="h-8 w-8 text-emerald-600 shrink-0" />
-                            <div>
-                                <span className="text-xs uppercase font-bold text-ink-500 block">
-                                    {t.pickupAlert}
-                                </span>
-                                <span className="text-sm sm:text-base font-extrabold text-ink-900">
-                                    {t.pickupAlertDesc}
-                                </span>
+                            {/* Alert */}
+                            <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4 border-t md:border-t-0 border-line/70">
+                                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                                    <MessageSquare className="h-5 w-5" />
+                                </div>
+                                <div className="min-w-0">
+                                    <span className="text-[10px] uppercase font-bold text-ink-500 block leading-none mb-1">
+                                        {t.pickupAlert}
+                                    </span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-ink-900 block truncate sm:whitespace-normal">
+                                        {t.pickupAlertDesc}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -344,49 +359,48 @@ export default function Home() {
             </section>
 
             {/* MAIN ORDER SECTION */}
-            <section className="container-page mt-10">
+            <section className="container-page px-3 sm:px-6 mt-4 sm:mt-8">
                 <div className="max-w-3xl mx-auto">
                     {!confirmedOrder ? (
-                        <div className="bg-white rounded-3xl border-2 border-line shadow-2xl p-6 sm:p-10">
-                            {/* Step 1: Select Weight */}
-                            <div className="mb-8">
-                                <h2 className="text-xl sm:text-2xl font-bold text-ink-900 mb-2">
-                                    ૧. {t.selectWeight}
+                        <div className="bg-white rounded-2xl sm:rounded-3xl border border-line shadow-lg p-4 sm:p-8">
+                            {/* Step 1: Select Weight (Side by Side on mobile for instant visibility) */}
+                            <div className="mb-6">
+                                <h2 className="text-lg sm:text-2xl font-bold text-ink-900 mb-1">
+                                    {step1} {t.selectWeight}
                                 </h2>
-                                <p className="text-xs sm:text-sm text-ink-500 mb-4">
+                                <p className="text-xs text-ink-500 mb-3">
                                     {lang === "gu"
-                                        ? "તમને જેટલું વજન જોઈએ તે બોક્સ પર ક્લિક કરો:"
+                                        ? "તમને જેટલું વજન જોઈએ તે બોક્સ પસંદ કરો:"
                                         : "Click the size you want to order:"}
                                 </p>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
                                     {/* 500g Card */}
                                     <button
                                         type="button"
                                         onClick={() => {
                                             setSelectedVariantIdx(0);
-                                            setPaymentPlan1kg("full");
                                         }}
-                                        className={`p-6 rounded-2xl border-3 text-left transition-all flex flex-col justify-between ${
+                                        className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border-2 text-left transition-all flex flex-col justify-between ${
                                             selectedVariantIdx === 0
-                                                ? "border-brand-700 bg-brand-50/60 shadow-md ring-2 ring-brand-700/20"
-                                                : "border-line bg-ivory-50 hover:bg-white text-ink-700"
+                                                ? "border-brand-700 bg-brand-50/70 shadow-sm ring-1 ring-brand-700"
+                                                : "border-line bg-ivory-50/60 hover:bg-white text-ink-700"
                                         }`}
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-lg sm:text-xl font-extrabold text-ink-900">
+                                        <div className="flex items-center justify-between w-full">
+                                            <span className="text-sm sm:text-lg font-extrabold text-ink-900 leading-tight">
                                                 {t.weight500g}
                                             </span>
                                             {selectedVariantIdx === 0 && (
-                                                <CheckCircle2 className="h-6 w-6 text-brand-700" />
+                                                <CheckCircle2 className="h-5 w-5 text-brand-700 shrink-0" />
                                             )}
                                         </div>
-                                        <div className="mt-3">
-                                            <span className="text-3xl font-extrabold text-brand-700">
+                                        <div className="mt-2.5">
+                                            <span className="text-2xl sm:text-3xl font-extrabold text-brand-700 block">
                                                 {t.price500g}
                                             </span>
-                                            <span className="text-xs text-ink-500 block mt-1 font-medium">
-                                                {lang === "gu" ? "પૂરું પેમેન્ટ ઓનલાઇન" : "Full payment online"}
+                                            <span className="text-[11px] sm:text-xs text-ink-500 block font-medium mt-0.5">
+                                                {lang === "gu" ? "પૂરું પેમેન્ટ" : "Full payment"}
                                             </span>
                                         </div>
                                     </button>
@@ -395,26 +409,26 @@ export default function Home() {
                                     <button
                                         type="button"
                                         onClick={() => setSelectedVariantIdx(1)}
-                                        className={`p-6 rounded-2xl border-3 text-left transition-all flex flex-col justify-between ${
+                                        className={`p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border-2 text-left transition-all flex flex-col justify-between ${
                                             selectedVariantIdx === 1
-                                                ? "border-brand-700 bg-brand-50/60 shadow-md ring-2 ring-brand-700/20"
-                                                : "border-line bg-ivory-50 hover:bg-white text-ink-700"
+                                                ? "border-brand-700 bg-brand-50/70 shadow-sm ring-1 ring-brand-700"
+                                                : "border-line bg-ivory-50/60 hover:bg-white text-ink-700"
                                         }`}
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-lg sm:text-xl font-extrabold text-ink-900">
+                                        <div className="flex items-center justify-between w-full">
+                                            <span className="text-sm sm:text-lg font-extrabold text-ink-900 leading-tight">
                                                 {t.weight1kg}
                                             </span>
                                             {selectedVariantIdx === 1 && (
-                                                <CheckCircle2 className="h-6 w-6 text-brand-700" />
+                                                <CheckCircle2 className="h-5 w-5 text-brand-700 shrink-0" />
                                             )}
                                         </div>
-                                        <div className="mt-3">
-                                            <span className="text-3xl font-extrabold text-brand-700">
+                                        <div className="mt-2.5">
+                                            <span className="text-2xl sm:text-3xl font-extrabold text-brand-700 block">
                                                 {t.price1kg}
                                             </span>
-                                            <span className="text-xs text-ink-500 block mt-1 font-medium">
-                                                {lang === "gu" ? "પૂરું પેમેન્ટ અથવા ₹૫૦૦ એડવાન્સ" : "Full payment or ₹500 advance"}
+                                            <span className="text-[11px] sm:text-xs text-ink-500 block font-medium mt-0.5">
+                                                {lang === "gu" ? "પૂરું કે ₹૫૦૦ એડવાન્સ" : "Full or ₹500 advance"}
                                             </span>
                                         </div>
                                     </button>
@@ -423,56 +437,56 @@ export default function Home() {
 
                             {/* SPECIAL: 1 KG PAYMENT OPTION (Advance vs Full) */}
                             {is1kg && (
-                                <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-amber-50/80 border-2 border-amber-300">
-                                    <h3 className="text-base sm:text-lg font-bold text-amber-950 mb-3 flex items-center gap-2">
-                                        <Info className="h-5 w-5 text-amber-700 shrink-0" />
+                                <div className="mb-6 p-3.5 sm:p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-300">
+                                    <h3 className="text-sm sm:text-base font-bold text-amber-950 mb-2.5 flex items-center gap-1.5">
+                                        <Info className="h-4 w-4 text-amber-700 shrink-0" />
                                         <span>{t.paymentOptionTitle}</span>
                                     </h3>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {/* Option A: Full ₹840 */}
-                                        <button
-                                            type="button"
-                                            onClick={() => setPaymentPlan1kg("full")}
-                                            className={`p-4 rounded-xl border-2 text-left transition-all ${
-                                                paymentPlan1kg === "full"
-                                                    ? "bg-white border-brand-700 shadow-sm"
-                                                    : "bg-white/60 border-amber-200 opacity-80"
-                                            }`}
-                                        >
-                                            <div className="flex items-center justify-between">
-                                                <span className="font-extrabold text-sm sm:text-base text-ink-900">
-                                                    {t.payFullTitle}
-                                                </span>
-                                                {paymentPlan1kg === "full" && (
-                                                    <CheckCircle2 className="h-5 w-5 text-brand-700" />
-                                                )}
-                                            </div>
-                                            <p className="text-xs text-ink-600 mt-1">
-                                                {t.payFullSub}
-                                            </p>
-                                        </button>
-
-                                        {/* Option B: Advance ₹500 */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                                        {/* Option A: Advance ₹500 (Recommended default) */}
                                         <button
                                             type="button"
                                             onClick={() => setPaymentPlan1kg("advance")}
-                                            className={`p-4 rounded-xl border-2 text-left transition-all ${
+                                            className={`p-3 rounded-xl border-2 text-left transition-all ${
                                                 paymentPlan1kg === "advance"
-                                                    ? "bg-white border-brand-700 shadow-sm"
-                                                    : "bg-white/60 border-amber-200 opacity-80"
+                                                    ? "bg-white border-brand-700 shadow-sm ring-1 ring-brand-700"
+                                                    : "bg-white/60 border-amber-200"
                                             }`}
                                         >
                                             <div className="flex items-center justify-between">
-                                                <span className="font-extrabold text-sm sm:text-base text-brand-800">
+                                                <span className="font-extrabold text-xs sm:text-sm text-brand-800">
                                                     {t.payAdvanceTitle}
                                                 </span>
                                                 {paymentPlan1kg === "advance" && (
-                                                    <CheckCircle2 className="h-5 w-5 text-brand-700" />
+                                                    <CheckCircle2 className="h-4 w-4 text-brand-700 shrink-0" />
                                                 )}
                                             </div>
-                                            <p className="text-xs text-ink-600 mt-1">
+                                            <p className="text-[11px] text-ink-600 mt-0.5">
                                                 {t.payAdvanceSub}
+                                            </p>
+                                        </button>
+
+                                        {/* Option B: Full ₹840 */}
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentPlan1kg("full")}
+                                            className={`p-3 rounded-xl border-2 text-left transition-all ${
+                                                paymentPlan1kg === "full"
+                                                    ? "bg-white border-brand-700 shadow-sm ring-1 ring-brand-700"
+                                                    : "bg-white/60 border-amber-200"
+                                            }`}
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-extrabold text-xs sm:text-sm text-ink-900">
+                                                    {t.payFullTitle}
+                                                </span>
+                                                {paymentPlan1kg === "full" && (
+                                                    <CheckCircle2 className="h-4 w-4 text-brand-700 shrink-0" />
+                                                )}
+                                            </div>
+                                            <p className="text-[11px] text-ink-600 mt-0.5">
+                                                {t.payFullSub}
                                             </p>
                                         </button>
                                     </div>
@@ -480,32 +494,32 @@ export default function Home() {
                             )}
 
                             {/* Step 2: Quantity Selector */}
-                            <div className="mb-8 p-5 rounded-2xl bg-ivory-50 border border-line flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div className="mb-6 p-3.5 sm:p-5 rounded-2xl bg-ivory-50 border border-line flex items-center justify-between gap-3">
                                 <div>
-                                    <span className="font-bold text-base text-ink-900 block">
-                                        ૨. {t.quantityLabel}
+                                    <span className="font-bold text-sm sm:text-base text-ink-900 block leading-tight">
+                                        {step2} {t.quantityLabel}
                                     </span>
-                                    <span className="text-xs text-ink-500">
-                                        {lang === "gu" ? "વધુ બોક્સ માટે + બટન દબાવો" : "Use + button for more boxes"}
+                                    <span className="text-[11px] text-ink-500">
+                                        {lang === "gu" ? "બોક્સની સંખ્યા:" : "Number of boxes:"}
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
                                     <button
                                         type="button"
                                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                        className="w-12 h-12 rounded-xl bg-white border-2 border-line text-2xl font-extrabold text-ink-900 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-700 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white border-2 border-line text-xl sm:text-2xl font-extrabold text-ink-900 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-700 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                                         aria-label="Decrease quantity"
                                     >
                                         -
                                     </button>
-                                    <span className="text-2xl font-extrabold text-ink-900 w-12 text-center">
+                                    <span className="text-xl sm:text-2xl font-extrabold text-ink-900 w-8 sm:w-10 text-center">
                                         {quantity}
                                     </span>
                                     <button
                                         type="button"
                                         onClick={() => setQuantity(quantity + 1)}
-                                        className="w-12 h-12 rounded-xl bg-white border-2 border-line text-2xl font-extrabold text-ink-900 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-700 active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white border-2 border-line text-xl sm:text-2xl font-extrabold text-ink-900 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-700 active:scale-95 transition-all flex items-center justify-center shadow-sm"
                                         aria-label="Increase quantity"
                                     >
                                         +
@@ -514,19 +528,19 @@ export default function Home() {
                             </div>
 
                             {/* Price Summary Breakdown */}
-                            <div className="mb-8 p-6 rounded-2xl bg-brand-50/70 border-2 border-brand-200">
-                                <div className="flex items-center justify-between text-sm sm:text-base pb-3 border-b border-brand-200/80">
+                            <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-brand-50/70 border-2 border-brand-200">
+                                <div className="flex items-center justify-between text-xs sm:text-sm pb-2.5 border-b border-brand-200/80">
                                     <span className="text-ink-700 font-bold">{t.summaryItem}</span>
                                     <span className="font-extrabold text-ink-900">
                                         {is1kg ? t.weight1kg : t.weight500g} × {quantity} {lang === "gu" ? "બોક્સ" : "box"}
                                     </span>
                                 </div>
 
-                                <div className="flex items-center justify-between pt-3 text-base sm:text-lg">
-                                    <span className="font-extrabold text-ink-900">
+                                <div className="flex items-center justify-between pt-2.5">
+                                    <span className="font-extrabold text-sm sm:text-base text-ink-900">
                                         {t.summaryPayNow}
                                     </span>
-                                    <span className="text-3xl font-extrabold text-brand-700">
+                                    <span className="text-2xl sm:text-3xl font-extrabold text-brand-700">
                                         ₹{totalOnlinePayable}
                                     </span>
                                 </div>
@@ -534,22 +548,24 @@ export default function Home() {
                                 {totalDueAtVadi > 0 && (
                                     <div className="flex items-center justify-between pt-2 text-xs sm:text-sm text-amber-900 font-bold border-t border-brand-200/80 mt-2">
                                         <span>{t.summaryPayAtVadi}</span>
-                                        <span>₹{totalDueAtVadi} ({lang === "gu" ? "રોકડા" : "Cash at Vadi"})</span>
+                                        <span>₹{totalDueAtVadi} ({lang === "gu" ? "રોકડા વાડી પર" : "Cash at Vadi"})</span>
                                     </div>
                                 )}
                             </div>
 
                             {/* Step 3: Customer Form */}
-                            <form onSubmit={handleFormSubmit} className="space-y-5">
-                                <h2 className="text-xl sm:text-2xl font-bold text-ink-900">
-                                    ૩. {t.formHeading}
-                                </h2>
-                                <p className="text-xs sm:text-sm text-ink-500 -mt-2">
-                                    {t.formSub}
-                                </p>
+                            <form onSubmit={handleFormSubmit} className="space-y-4">
+                                <div>
+                                    <h2 className="text-lg sm:text-2xl font-bold text-ink-900 leading-tight">
+                                        {step3} {t.formHeading}
+                                    </h2>
+                                    <p className="text-xs text-ink-500 mt-0.5">
+                                        {t.formSub}
+                                    </p>
+                                </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-ink-800 mb-1.5">
+                                    <label className="block text-xs sm:text-sm font-bold text-ink-800 mb-1">
                                         {t.nameLabel}
                                     </label>
                                     <input
@@ -558,12 +574,12 @@ export default function Home() {
                                         placeholder={t.namePlaceholder}
                                         value={orderForm.name}
                                         onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
-                                        className="w-full px-4 py-3.5 rounded-xl border-2 border-line text-base font-medium focus:border-brand-700 focus:outline-none bg-ivory-50/50"
+                                        className="w-full px-3.5 py-3 rounded-xl border-2 border-line text-base font-medium focus:border-brand-700 focus:outline-none bg-ivory-50/50"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-ink-800 mb-1.5">
+                                    <label className="block text-xs sm:text-sm font-bold text-ink-800 mb-1">
                                         {t.phoneLabel}
                                     </label>
                                     <input
@@ -572,15 +588,15 @@ export default function Home() {
                                         placeholder={t.phonePlaceholder}
                                         value={orderForm.phone}
                                         onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
-                                        className="w-full px-4 py-3.5 rounded-xl border-2 border-line text-base font-medium focus:border-brand-700 focus:outline-none bg-ivory-50/50"
+                                        className="w-full px-3.5 py-3 rounded-xl border-2 border-line text-base font-medium focus:border-brand-700 focus:outline-none bg-ivory-50/50"
                                     />
-                                    <span className="text-xs text-ink-500 block mt-1.5">
+                                    <span className="text-[11px] text-ink-500 block mt-1">
                                         {t.phoneHelp}
                                     </span>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-ink-800 mb-1.5">
+                                    <label className="block text-xs sm:text-sm font-bold text-ink-800 mb-1">
                                         {t.notesLabel}
                                     </label>
                                     <input
@@ -588,19 +604,19 @@ export default function Home() {
                                         placeholder={t.notesPlaceholder}
                                         value={orderForm.notes}
                                         onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
-                                        className="w-full px-4 py-3 rounded-xl border border-line text-sm focus:border-brand-700 focus:outline-none"
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-line text-sm focus:border-brand-700 focus:outline-none"
                                     />
                                 </div>
 
-                                {/* Big Pay Button */}
+                                {/* Big Pay Button (Thumb-friendly on mobile) */}
                                 <button
                                     type="submit"
                                     disabled={isProcessing}
-                                    className="w-full mt-4 py-4 sm:py-5 px-6 rounded-2xl bg-brand-700 hover:bg-brand-800 active:scale-[0.99] text-white text-lg sm:text-xl font-extrabold flex items-center justify-center gap-3 shadow-xl transition-all disabled:opacity-70"
+                                    className="w-full mt-3 py-3.5 sm:py-4 px-5 rounded-xl sm:rounded-2xl bg-brand-700 hover:bg-brand-800 active:scale-[0.99] text-white text-base sm:text-xl font-extrabold flex items-center justify-center gap-2.5 shadow-lg transition-all disabled:opacity-70 min-h-[52px]"
                                 >
                                     {isProcessing ? (
                                         <>
-                                            <RefreshCw className="h-6 w-6 animate-spin" />
+                                            <RefreshCw className="h-5 w-5 animate-spin" />
                                             <span>{t.btnProcessing}</span>
                                         </>
                                     ) : (
@@ -608,13 +624,13 @@ export default function Home() {
                                             <span>
                                                 {t.btnPayNow} (₹{totalOnlinePayable})
                                             </span>
-                                            <ArrowRight className="h-6 w-6" />
+                                            <ArrowRight className="h-5 w-5" />
                                         </>
                                     )}
                                 </button>
 
-                                <p className="text-xs text-center text-ink-500 flex items-center justify-center gap-1.5 pt-2">
-                                    <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
+                                <p className="text-[11px] text-center text-ink-500 flex items-center justify-center gap-1 pt-1">
+                                    <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                                     <span>{t.secureNotice}</span>
                                 </p>
                             </form>
@@ -623,70 +639,70 @@ export default function Home() {
                         /* OFFICIAL DIGITAL PICKUP RECEIPT */
                         <div
                             id="order-receipt-modal"
-                            className="bg-white rounded-3xl p-6 sm:p-10 text-ink-900 shadow-2xl border-4 border-emerald-500 animate-fade-up"
+                            className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-ink-900 shadow-xl border-4 border-emerald-500 animate-fade-up"
                         >
-                            <div className="text-center pb-6 border-b border-line">
-                                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-sm">
-                                    <CheckCircle2 className="h-10 w-10" />
+                            <div className="text-center pb-4 border-b border-line">
+                                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2 shadow-sm">
+                                    <CheckCircle2 className="h-8 w-8" />
                                 </div>
-                                <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-sm font-extrabold uppercase tracking-wider mb-2">
+                                <span className="inline-block px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-1">
                                     {t.receiptConfirmed}
                                 </span>
-                                <p className="text-sm text-ink-600 mt-1">
+                                <p className="text-xs sm:text-sm text-ink-600">
                                     {t.receiptSubtitle}
                                 </p>
                             </div>
 
-                            <div className="my-6 space-y-4 text-sm sm:text-base">
-                                <div className="p-4 rounded-2xl bg-brand-50 border-2 border-brand-200 text-center">
-                                    <span className="text-xs uppercase tracking-wider text-ink-600 font-bold block mb-1">
+                            <div className="my-4 space-y-3 text-sm">
+                                <div className="p-3.5 rounded-xl bg-brand-50 border-2 border-brand-200 text-center">
+                                    <span className="text-[11px] uppercase tracking-wider text-ink-600 font-bold block mb-0.5">
                                         {t.tokenTitle}
                                     </span>
-                                    <span className="text-3xl sm:text-4xl font-extrabold text-brand-700 font-mono tracking-wider">
+                                    <span className="text-2xl sm:text-4xl font-extrabold text-brand-700 font-mono tracking-wider">
                                         {confirmedOrder.orderId}
                                     </span>
-                                    <p className="text-xs text-brand-900 mt-2 font-medium">
+                                    <p className="text-xs text-brand-900 mt-1 font-medium">
                                         {t.tokenInstruction}
                                     </p>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm p-4 rounded-xl bg-ivory-50 border border-line">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm p-3.5 rounded-xl bg-ivory-50 border border-line">
                                     <div>
-                                        <span className="text-xs text-ink-400 block font-semibold">{lang === "gu" ? "ગ્રાહકનું નામ:" : "Name:"}</span>
+                                        <span className="text-[11px] text-ink-400 block font-semibold">{lang === "gu" ? "ગ્રાહકનું નામ:" : "Name:"}</span>
                                         <span className="font-bold text-ink-900">{confirmedOrder.name}</span>
                                     </div>
                                     <div>
-                                        <span className="text-xs text-ink-400 block font-semibold">{lang === "gu" ? "મોબાઈલ નંબર:" : "Phone:"}</span>
+                                        <span className="text-[11px] text-ink-400 block font-semibold">{lang === "gu" ? "મોબાઈલ નંબર:" : "Phone:"}</span>
                                         <span className="font-bold text-ink-900">{confirmedOrder.phone}</span>
                                     </div>
                                     <div>
-                                        <span className="text-xs text-ink-400 block font-semibold">{lang === "gu" ? "ઓર્ડર વિગત:" : "Item:"}</span>
+                                        <span className="text-[11px] text-ink-400 block font-semibold">{lang === "gu" ? "ઓર્ડર વિગત:" : "Item:"}</span>
                                         <span className="font-bold text-ink-900">
                                             {confirmedOrder.weight} × {confirmedOrder.quantity} {lang === "gu" ? "બોક્સ" : "box"}
                                         </span>
                                     </div>
                                     <div>
-                                        <span className="text-xs text-ink-400 block font-semibold">{t.paidAmount}</span>
-                                        <span className="font-extrabold text-emerald-700 text-lg">₹{confirmedOrder.paidOnline}</span>
+                                        <span className="text-[11px] text-ink-400 block font-semibold">{t.paidAmount}</span>
+                                        <span className="font-extrabold text-emerald-700 text-base">₹{confirmedOrder.paidOnline}</span>
                                     </div>
                                     {confirmedOrder.dueAtVadi > 0 && (
-                                        <div className="sm:col-span-2 pt-2 border-t border-line text-amber-900 font-bold">
+                                        <div className="sm:col-span-2 pt-1.5 border-t border-line text-amber-900 font-bold text-xs sm:text-sm">
                                             <span>{t.dueAmount} </span>
-                                            <span className="text-lg text-amber-700">₹{confirmedOrder.dueAtVadi}</span>
-                                            <span className="text-xs block font-normal mt-0.5">
+                                            <span className="text-base text-amber-700">₹{confirmedOrder.dueAtVadi}</span>
+                                            <span className="text-[11px] block font-normal text-ink-600">
                                                 {lang === "gu" ? "(સમાજ વાડી પર સાલમ પાક લેતી વખતે રોકડા આપવા)" : "(Pay in cash when collecting at Community Vadi)"}
                                             </span>
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1">
-                                    <div className="flex items-center gap-2 font-bold">
+                                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-0.5">
+                                    <div className="flex items-center gap-1.5 font-bold">
                                         <MapPin className="h-4 w-4 text-amber-700 shrink-0" />
                                         <span>{t.pickupPoint}</span>
                                     </div>
                                     <p className="font-bold">{lang === "gu" ? BRAND.pickupLocationGu : BRAND.pickupLocation}</p>
-                                    <p className="text-xs text-ink-600 pt-1">
+                                    <p className="text-[11px] text-ink-600 pt-0.5">
                                         {lang === "gu"
                                             ? `અંદાજિત તૈયાર થવાની તારીખ: ${confirmedOrder.estimatedReadyDate}`
                                             : `Estimated Ready Date: ${confirmedOrder.estimatedReadyDate}`}
@@ -694,11 +710,11 @@ export default function Home() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                            <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                                 <button
                                     type="button"
                                     onClick={handlePrint}
-                                    className="flex-1 py-3 px-4 rounded-xl border-2 border-line bg-ivory-50 text-ink-900 font-bold hover:bg-ivory-100 flex items-center justify-center gap-2 text-sm shadow-sm"
+                                    className="flex-1 py-3 px-4 rounded-xl border border-line bg-ivory-50 text-ink-900 font-bold hover:bg-ivory-100 flex items-center justify-center gap-2 text-xs shadow-sm"
                                 >
                                     <Printer className="h-4 w-4" />
                                     <span>{t.btnPrint}</span>
@@ -706,7 +722,7 @@ export default function Home() {
                                 <button
                                     type="button"
                                     onClick={resetOrder}
-                                    className="flex-1 py-3 px-4 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold flex items-center justify-center gap-2 text-sm shadow-md"
+                                    className="flex-1 py-3 px-4 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold flex items-center justify-center gap-2 text-xs shadow"
                                 >
                                     <span>{t.btnNewOrder}</span>
                                 </button>
@@ -715,22 +731,22 @@ export default function Home() {
                     )}
 
                     {/* PROMINENT HELPLINE / WHATSAPP HELP CARD FOR ELDERLY */}
-                    <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-emerald-50 border-2 border-emerald-300 shadow-md">
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow">
-                                <Phone className="h-6 w-6" />
+                    <div className="mt-6 p-4 sm:p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-300 shadow-sm">
+                        <div className="flex items-start gap-3 sm:gap-4">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow">
+                                <Phone className="h-5 w-5 sm:h-6 sm:w-6" />
                             </div>
-                            <div className="space-y-2">
-                                <h3 className="text-lg sm:text-xl font-extrabold text-emerald-950">
+                            <div className="space-y-1.5 min-w-0">
+                                <h3 className="text-base sm:text-xl font-extrabold text-emerald-950 leading-tight">
                                     {t.helplineTitle}
                                 </h3>
-                                <p className="text-sm text-emerald-900/90 leading-relaxed">
+                                <p className="text-xs sm:text-sm text-emerald-900/90 leading-relaxed">
                                     {t.helplineDesc}
                                 </p>
-                                <div className="flex flex-wrap items-center gap-3 pt-2">
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2">
                                     <a
                                         href={`tel:${BRAND.helplinePhone}`}
-                                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-extrabold shadow"
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-extrabold shadow"
                                     >
                                         <Phone className="h-4 w-4" />
                                         <span>{t.btnCall}: {BRAND.helplinePhone}</span>
@@ -743,7 +759,7 @@ export default function Home() {
                                         )}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 border-emerald-600 text-emerald-800 hover:bg-emerald-50 text-sm font-extrabold shadow"
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border-2 border-emerald-600 text-emerald-800 hover:bg-emerald-50 text-xs sm:text-sm font-extrabold shadow"
                                     >
                                         <MessageSquare className="h-4 w-4 text-emerald-600" />
                                         <span>{t.btnWhatsApp}</span>
@@ -754,15 +770,15 @@ export default function Home() {
                     </div>
 
                     {/* OPTIONAL SECOND PAGE LINK */}
-                    <div className="mt-10 p-6 rounded-2xl bg-white border border-line text-center shadow-sm">
-                        <p className="text-sm text-ink-600 font-medium mb-3">
+                    <div className="mt-8 p-4 sm:p-5 rounded-2xl bg-white border border-line text-center shadow-sm">
+                        <p className="text-xs sm:text-sm text-ink-600 font-medium mb-2">
                             {lang === "gu"
-                                ? "સુરત ક્ષત્રિય યુવક મંડળનો ઇતિહાસ, હોદ્દેદારો અને સેવાકીય પ્રવૃત્તિઓ જાણવા માટે:"
+                                ? "સુરત ક્ષત્રિય યુવક મંડળનો ઇતિહાસ, હોદ્દેદારો અને સેવાકીય પ્રવૃત્તિઓ:"
                                 : "Learn more about Mandal history, managing committee, and seva initiatives:"}
                         </p>
                         <Link
                             to="/about"
-                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-ivory-100 hover:bg-ivory-200 text-brand-700 font-bold text-sm border border-line transition-all"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-ivory-100 hover:bg-ivory-200 text-brand-700 font-bold text-xs sm:text-sm border border-line transition-all"
                         >
                             <span>{t.navAbout} →</span>
                         </Link>
