@@ -38,16 +38,17 @@
     }
     body {
         @apply bg-ivory-50 text-ink-900;
-        font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Anek Gujarati", "Noto Sans Gujarati", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
     h1, h2, h3, h4 {
-        font-family: "Playfair Display", Georgia, serif;
-        letter-spacing: -0.015em;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Anek Gujarati", sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
     }
     .font-gujarati {
-        font-family: "Anek Gujarati", "Noto Sans Gujarati", sans-serif;
+        font-family: "Anek Gujarati", "Noto Sans Gujarati", "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-feature-settings: normal;
     }
     ::selection {

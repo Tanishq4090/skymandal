@@ -1,149 +1,162 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Instagram } from "lucide-react";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { Menu, X, Phone, Globe } from "lucide-react";
 import { BRAND } from "@/data/site";
-
-const NAV = [
-    { to: "/", label: "Home", labelGu: "મુખ્ય" },
-    { to: "/about", label: "About Us", labelGu: "અમારા વિશે" },
-    { to: "/members", label: "Members", labelGu: "સભ્યો" },
-    { to: "/salampak", label: "Shop Salampak", labelGu: "સાલમ પાક" },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 export const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 12);
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    useEffect(() => {
-        setOpen(false);
-    }, [pathname]);
+    const { lang, toggleLang, t } = useLanguage();
 
     return (
         <header
             data-testid="site-header"
-            className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-                scrolled
-                    ? "bg-ivory-50/85 backdrop-blur-xl border-b border-line"
-                    : "bg-transparent border-b border-transparent"
-            }`}
+            className="sticky top-0 z-50 w-full bg-white border-b border-line shadow-sm"
         >
             <div className="container-page flex items-center justify-between h-20">
+                {/* Brand Logo & Name */}
                 <Link
                     to="/"
                     data-testid="brand-link"
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3.5 group"
                 >
                     <img
                         src={BRAND.logoUrl}
                         alt="SKYM Logo"
-                        className="h-12 w-auto object-contain transition-transform duration-500 group-hover:rotate-[-3deg]"
+                        className="h-12 w-auto object-contain"
                     />
-                    <div className="hidden sm:flex flex-col leading-tight">
-                        <span className="font-gujarati text-[15px] text-brand-700">
-                            {BRAND.nameGujarati}
+                    <div className="flex flex-col leading-tight">
+                        <span className="font-bold text-base sm:text-lg text-brand-700">
+                            {lang === "gu" ? BRAND.nameGujarati : BRAND.name}
                         </span>
-                        <span className="font-serif text-[15px] text-ink-900 -mt-0.5">
-                            Surat Kshtriya Yuvak Mandal
+                        <span className="text-xs sm:text-sm text-ink-500 font-medium">
+                            {lang === "gu" ? "સુરત ક્ષત્રિય યુવક મંડળ · સ્થાપના ૧૯૬૧" : "Serving Surat Khatri Community · Est. 1961"}
                         </span>
                     </div>
                 </Link>
 
-                <nav className="hidden md:flex items-center gap-1">
-                    {NAV.map((n) => (
+                {/* Desktop 2-Page Nav + Lang Switcher + Helpline */}
+                <div className="hidden md:flex items-center gap-6">
+                    <nav className="flex items-center gap-2">
                         <NavLink
-                            key={n.to}
-                            to={n.to}
-                            data-testid={`nav-${n.label.toLowerCase().replace(/\s+/g, "-")}`}
+                            to="/"
+                            end
                             className={({ isActive }) =>
-                                `relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                                `px-4 py-2 rounded-lg text-sm font-bold transition-all ${
                                     isActive
-                                        ? "text-brand-700"
-                                        : "text-ink-700 hover:text-brand-700"
+                                        ? "bg-brand-50 text-brand-700 shadow-sm"
+                                        : "text-ink-700 hover:text-brand-700 hover:bg-ivory-50"
                                 }`
                             }
                         >
-                            {({ isActive }) => (
-                                <>
-                                    <span>{n.label}</span>
-                                    <span
-                                        className={`absolute left-4 right-4 -bottom-0.5 h-px bg-brand-600 transition-all duration-300 ${
-                                            isActive ? "opacity-100" : "opacity-0"
-                                        }`}
-                                    />
-                                </>
-                            )}
+                            {t.navOrder}
                         </NavLink>
-                    ))}
-                </nav>
 
-                <div className="hidden md:flex items-center gap-3">
+                        <NavLink
+                            to="/about"
+                            className={({ isActive }) =>
+                                `px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                                    isActive
+                                        ? "bg-brand-50 text-brand-700 shadow-sm"
+                                        : "text-ink-700 hover:text-brand-700 hover:bg-ivory-50"
+                                }`
+                            }
+                        >
+                            {t.navAbout}
+                        </NavLink>
+                    </nav>
+
+                    {/* Language Switcher Pill */}
+                    <button
+                        type="button"
+                        onClick={toggleLang}
+                        data-testid="lang-toggle-btn"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-line bg-ivory-100 hover:bg-ivory-200 text-xs font-bold text-ink-900 transition-colors shadow-sm"
+                        title="Change Language / ભાષા બદલો"
+                    >
+                        <Globe className="h-3.5 w-3.5 text-brand-700" />
+                        <span>{t.langSwitch}</span>
+                    </button>
+
+                    {/* Direct Call / Helpline button */}
                     <a
-                        href={BRAND.instagram}
-                        target="_blank"
-                        rel="noreferrer"
-                        data-testid="nav-instagram"
-                        className="text-ink-500 hover:text-brand-700 transition-colors"
-                        aria-label="Instagram"
+                        href={`tel:${BRAND.helplinePhone}`}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-sm"
+                        title="Call for help"
                     >
-                        <Instagram className="h-5 w-5" />
+                        <Phone className="h-3.5 w-3.5" />
+                        <span>{lang === "gu" ? "મદદ માટે ફોન" : "Help: Call Us"}</span>
                     </a>
-                    <Link
-                        to="/#contact"
-                        data-testid="nav-contact-cta"
-                        className="btn-primary !py-2.5 !px-5"
-                    >
-                        Contact Us
-                    </Link>
                 </div>
 
-                <button
-                    type="button"
-                    aria-label="Toggle menu"
-                    data-testid="nav-mobile-toggle"
-                    className="md:hidden p-2 rounded-md text-ink-900"
-                    onClick={() => setOpen((v) => !v)}
-                >
-                    {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                </button>
+                {/* Mobile Right Controls: Lang Switch + Mobile Menu Toggle */}
+                <div className="flex md:hidden items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={toggleLang}
+                        className="px-2.5 py-1.5 rounded-full border border-line bg-ivory-100 text-xs font-bold text-ink-900"
+                    >
+                        {t.langSwitch}
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => setOpen(!open)}
+                        className="p-2 rounded-lg text-ink-700 hover:bg-ivory-100"
+                        aria-label="Toggle menu"
+                    >
+                        {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                    </button>
+                </div>
             </div>
 
+            {/* Mobile Drawer */}
             {open && (
-                <div className="md:hidden border-t border-line bg-ivory-50">
-                    <div className="container-page py-4 flex flex-col gap-1">
-                        {NAV.map((n) => (
-                            <NavLink
-                                key={n.to}
-                                to={n.to}
-                                data-testid={`nav-mobile-${n.label.toLowerCase().replace(/\s+/g, "-")}`}
-                                className={({ isActive }) =>
-                                    `flex items-center justify-between px-2 py-3 rounded-md ${
-                                        isActive
-                                            ? "bg-brand-50 text-brand-700"
-                                            : "text-ink-900 hover:bg-ivory-100"
-                                    }`
-                                }
-                            >
-                                <span className="font-medium">{n.label}</span>
-                                <span className="font-gujarati text-sm text-brand-600">
-                                    {n.labelGu}
-                                </span>
-                            </NavLink>
-                        ))}
-                        <Link
-                            to="/#contact"
-                            data-testid="nav-mobile-contact-cta"
-                            className="btn-primary mt-3"
+                <div className="md:hidden border-t border-line bg-white px-6 py-6 space-y-4 shadow-xl">
+                    <NavLink
+                        to="/"
+                        end
+                        onClick={() => setOpen(false)}
+                        className={({ isActive }) =>
+                            `block px-4 py-3 rounded-xl text-base font-bold ${
+                                isActive ? "bg-brand-50 text-brand-700" : "text-ink-900"
+                            }`
+                        }
+                    >
+                        {t.navOrder}
+                    </NavLink>
+                    <NavLink
+                        to="/about"
+                        onClick={() => setOpen(false)}
+                        className={({ isActive }) =>
+                            `block px-4 py-3 rounded-xl text-base font-bold ${
+                                isActive ? "bg-brand-50 text-brand-700" : "text-ink-900"
+                            }`
+                        }
+                    >
+                        {t.navAbout}
+                    </NavLink>
+
+                    <div className="pt-2 border-t border-line flex flex-col gap-2">
+                        <a
+                            href={`tel:${BRAND.helplinePhone}`}
+                            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold shadow"
                         >
-                            Contact Us
-                        </Link>
+                            <Phone className="h-4 w-4" />
+                            <span>{lang === "gu" ? "મદદ માટે ફોન કરો (Call Help)" : "Call Helpline"}</span>
+                        </a>
+                        <a
+                            href={`https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(
+                                lang === "gu"
+                                    ? "સાલમ પાક ઓર્ડર કરવા માટે મદદ જોઈએ છે."
+                                    : "Hello, I need help ordering Salampak."
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-green-50 text-emerald-800 border border-emerald-300 text-sm font-bold"
+                        >
+                            <span>WhatsApp Helpline</span>
+                        </a>
                     </div>
                 </div>
             )}

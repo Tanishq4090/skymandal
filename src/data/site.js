@@ -10,6 +10,8 @@ export const BRAND = {
     establishedSince: "Serving the Khatri community of Surat",
     instagram: "https://www.instagram.com/surat_kshtriya_yuvak_mandal/",
     email: "suratkym@gmail.com",
+    helplinePhone: "+91 80000 44090",
+    whatsappNumber: "918000044090",
     location: "Surat, Gujarat, India",
     pickupLocation: "Surat Kshtriya Samaj Community Vadi, Surat, Gujarat",
     pickupLocationGu: "સુરત ક્ષત્રિય સમાજ વાડી, સુરત",
