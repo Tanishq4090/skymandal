@@ -95,7 +95,7 @@ export default function Salampak() {
 
             // STEP 2: FRONTEND - Open Razorpay Modal with order_id
             const options = {
-                key: razorpayKey,
+                key: orderData.key_id || razorpayKey,
                 amount: orderData.amount, // in paise
                 currency: orderData.currency || "INR",
                 name: BRAND.name,

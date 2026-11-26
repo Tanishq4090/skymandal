@@ -49,7 +49,8 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       order_id: order.id,
       amount: order.amount,
-      currency: order.currency
+      currency: order.currency,
+      key_id: key_id
     });
   } catch (error) {
     console.error('Error creating Razorpay order:', error);
